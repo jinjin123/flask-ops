@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>用户登录</title>
+	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</head>
+<body>
+	<div class='container' style="margin-top:100px">
+		<form action="{{ url_for('login') }}" class='form-signin' role='form' style="width:300px;margin:0px auto;" method="post">
+			<h2 align='center' class='form-signin-heading'>用户登录</h2>
+			<input type='text' name="Username" class='form-control' placeholder='请输入用户名' required autofocus>
+			<div style='height:10px;clear:both;display:block'></div>
+			<input type='password' name="Password" class='form-control' placeholder='请输入密码' required>
+			<div class='checkbox'>
+				<label>
+				<input type='checkbox' name="rememberme" value='rememberme'> 记住登录状态
+				</label>
+			</div>
+			<button id="login_btn" class='btn btn-lg btn-primary btn-block' data-loading-text="正在登录..." type='submit'>登录</button>
+			<input type="hidden" name="nexturl" value="{{ nexturl }}">
+		</form>
+	</div>
+	<div style="margin:50px 0;"></div>
+	<center>
+		{% with errors = get_flashed_messages(category_filter=["error"]) %}
+		{% if errors %}
+		<div class="alert-message block-message error">
+		  <ul>
+			{%- for msg in errors %}
+			<li class="text-danger">{{ msg }}</li>
+			{% endfor -%}
+		  </ul>
+		</div>
+		{% endif %}
+		{% endwith %}
+	</center>
+</body>
+</html>

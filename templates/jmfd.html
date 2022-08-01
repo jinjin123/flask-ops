@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/jquery.cookie.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/easyui.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.easyui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/easyui-lang-zh_CN.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/yw.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jmfd.js') }}"></script>
+</head>
+<body>
+	<div style="padding-top: 15px;padding-left: 20px;">
+		<form id="jmaj" method="post">
+			<div><label style="display:inline-block;width:100px;">故障标题:</label><input id="jmtitle" class="easyui-textbox" data-options="required:true" style="width:400px"></div>
+			<div style="padding-top:10px;padding-left:100px;">
+				<label style="display:inline-block;width:40px;">姓名:</label><input id="jmname" class="easyui-textbox" data-options="required:true" style="width:150px">
+				<label style="display:inline-block;width:60px;">座位号:</label><input id="jmsnum" class="easyui-textbox" data-options="required:true" style="width:140px">
+			</div>
+			<div style="padding-top:10px;"><label style="display:inline-block;width:100px;">故障描述:</label><input id="jmdescription" class="easyui-textbox" data-options="multiline:true,required:true" style="width:400px;height:200px"></div>
+			<div style="padding-top:10px;text-align:left;">
+				<div style="display:inline;width:200px;padding-left:150px;"><a style="width:90px;height:30px;" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick='jmaddjob("{{ url_for('jobmdf') }}","{{ url_for('jmprogress') }}")'>提交</a></div>
+				<div style="display:inline;width:200px;padding-left:100px;"><a style="width:90px;height:30px;" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="jmreset()">重置</a></div>
+			</div>
+		</form>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#jmname").textbox('setValue',$.cookie('jm_name'));
+			$("#jmsnum").textbox('setValue',$.cookie('jm_snum'));
+			$('#jmtitle').textbox('textbox').focus();
+		});
+	</script>
+</body>
+</html>

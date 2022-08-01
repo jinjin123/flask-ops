@@ -1,0 +1,46 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/easyui.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.easyui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='ueditor/ueditor.config.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='ueditor/ueditor.all.min.js') }}"> </script>
+	<script type="text/javascript" src="{{ url_for('static', filename='ueditor/lang/zh-cn/zh-cn.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/yw.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/note.js') }}"></script>
+</head>
+<body>
+<div style="padding-top: 20px;padding-left: 20px;">
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var ue = UE.getEditor('editor', {
+				serverUrl: "/upload/"
+			});
+			$("#mdfnotetitle").textbox('setValue',parent.mdfnotetitle);
+			setTimeout("setContent(parent.mdfnotecontent)",500);
+			$('#mdfnotetitle').textbox('textbox').focus();
+		});	
+		function setContent(text) {
+			UE.getEditor('editor').setContent(text, false);
+		}
+	</script>
+	<div style="padding-top: 15px;padding-left: 20px;">
+		<form id="mn" method="post">
+			<div>ID:
+				<script type="text/javascript">
+					document.write(parent.mdfnoteid);
+				</script>
+			</div><br>
+			<div><label style="display:inline-block;width:70px;">标题:</label><input id="mdfnotetitle" name="notetitle" class="easyui-textbox" data-options="required:true" style="width:425px"></div><br>
+			<script id="editor" type="text/plain" style="width:1024px;height:500px;"></script><br>
+				<div style="display:inline;width:60px;"><a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="mdfnote('{{ url_for("notemdf") }}')">保存</a></div><br><br>
+			</div>
+		</form>
+	</div>
+</div>
+</body>
+</html>

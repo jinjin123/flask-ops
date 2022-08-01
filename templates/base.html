@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<title>运维平台</title>
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/easyui.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.easyui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/yw.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/base.js') }}"></script>
+</head>
+<body class="easyui-layout" data-options="border:false">
+	<div region="north" style="height:50px;background:#CAE1FF;">
+		<div style="width: 100px;float:left;padding-top: 15px;padding-left: 15px;">
+			<strong style="font-size: 20px;">运维平台</strong>
+		</div>
+		<div style="width: 150px;float:right;padding-top: 15px;padding-right: 15px;"><a style="text-decoration:none" href="#" onclick='perset("个人设置","{{ url_for('perset') }}")'>{{ g.user.nickname }}</a> , <a style="text-decoration:none" href="{{ url_for('logout') }}">注销</a></div>
+	</div>
+	<div data-options="region:'west',title:'导航菜单',split:true,onCollapse:function(){setTimeout('tabresize()',100)},onExpand:function(){setTimeout('tabresize()',100)}" style="width:300px;background:#C6E2FF;">
+		<ul id='tt' class="easyui-tree">   
+			<li>   
+				<span>工作管理</span>   
+				<ul>
+					<li>
+						<span>工作事项</span>   
+					</li> 
+					{% if g.user.role <= 1 %}
+					<li>
+						<span>服务器操作记录</span>   
+					</li> 
+					<li>
+						<span>zabbix事件</span>   
+					</li> 
+					{% endif %}
+				</ul>
+			</li>
+			{% if g.user.role <= 1 %}
+			<li>
+				<span>资源</span>   
+				<ul>
+					<li>   
+						<span>技术文档</span>   
+					</li>
+				</ul>
+			</li>
+			{% endif %}
+			{% if g.user.role <= 1 %}
+			<li>
+				<span>统计</span>   
+				<ul>
+					<li>   
+						<span>工作统计</span>   
+					</li>
+				</ul>
+			</li>
+			{% endif %}
+			{% if g.user.role == 0 %}
+			<li>
+				<span>设置</span>   
+				<ul>
+					<li>   
+						<span>用户</span>   
+					</li>
+				</ul>
+			</li>
+			{% endif %}
+		</ul>  
+	</div>
+	<div id="ct" data-options="region:'center'" style="padding:5px;overflow:hidden"></div>
+	<script type="text/javascript">
+		var navmenu = [["工作事项", "{{ url_for('jobform') }}"], ["服务器操作记录", "{{ url_for('svractform') }}"], ["用户", "{{ url_for('userform') }}"], ["zabbix事件", "{{ url_for('zabbixeventform') }}"],["技术文档", "{{ url_for('noteform') }}"],["工作统计", "{{ url_for('jobstatform') }}"]];
+		loadnavmenu(navmenu)
+	</script>
+{% block content %}{% endblock %}
+</body>
+</html>

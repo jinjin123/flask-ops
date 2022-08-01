@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<title>运维故障处理</title>
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/easyui.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.easyui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/yw.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jm.js') }}"></script>
+</head>
+<body class="easyui-layout" data-options="border:false">
+	<div region="north" style="height:50px;background:#CAE1FF;">
+		<div style="width: 150px;float:left;padding-top: 15px;padding-left: 15px;">
+			<strong style="font-size: 20px;">运维故障处理</strong>
+		</div>
+	</div>
+	<div id="ct" data-options="region:'center'" style="padding:5px;">
+		<div id="ct-tab" class="easyui-tabs" style="height:250px;"></div>
+	</div>
+	<!--评价提醒窗口开始-->
+	<div id="evaluatewarn" class="easyui-window" title="评价提醒" closed="true" style="width:300px;height:150px;"
+		data-options="resizable:false,collapsible:false,minimizable:false,maximizable:false,shadow:true,modal:false">
+		test
+	</div>
+	<!--评价提醒窗口结束-->
+	<script type="text/javascript">
+		var jmmenu = [["故障申报", "{{ url_for('jmfd') }}"], ["处理进展", "{{ url_for('jmprogress') }}"]];
+		$(document).ready(function(){
+			loadjmmenu(jmmenu);
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/easyui.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.easyui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/easyui-lang-zh_CN.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/yw.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jmprogress.js') }}"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			jmmdfurl = '{{ url_for("jmmdf") }}';
+			init();
+			loadjmp('{{ url_for("jobdata") }}');
+			jdurl = '{{ url_for("jobdatadetail") }}';
+			jmurl = '{{ url_for("jobmdf") }}';
+		});
+	</script>
+	<div style="padding-top: 15px;padding-left: 20px;">
+		<table id="jmpinfo"></table>
+		<div id="jmptb" style="height:auto">
+			<span>
+				状态:
+				<select id='sstatus' class="easyui-combobox" panelHeight="auto" editable='false'>
+					<option value="">全部</option>
+					<option value="0">未接手</option>
+					<option value="1">处理中</option>
+					<option value="2">待评价</option>
+				</select>
+			</span>
+			<span style="margin-left:20px;">
+				自动刷新:
+				<select id='flashdelay' class="easyui-combobox" panelHeight="auto" editable='false'>
+					<option value="0">不刷新</option>
+					<option value="5000">5秒</option>
+					<option value="10000">10秒</option>
+					<option value="30000">30秒</option>
+					<option value="60000">1分钟</option>
+				</select>
+			</span>
+		</div>
+		<!--查看事务详情对话框开始-->
+		<div id="mjmpdetail" class="easyui-window" title="事务详情" closed="true" style="width:830px;height:400px;top:50px;left:50px;"
+			data-options="resizable:false,collapsible:false,minimizable:false,maximizable:false,shadow:true,modal:true">
+			<div style="padding-top: 15px;padding-left: 20px;">
+				<table id="jmpdetaildatagrid"></table>
+			</div>
+		</div>
+		<!--查看事务详情对话框结束-->
+		<!--事务评价对话框开始-->
+		<div id="mjmpevaluate" class="easyui-window" title="事务评价" closed="true" style="width:500px;height:350px;top:50px;left:50px;"
+			data-options="resizable:false,collapsible:false,minimizable:false,maximizable:false,shadow:true,modal:true">
+			<div style="padding-top: 15px;padding-left: 20px;">
+				<form id="jmpevaluate" method="post">
+					<div><label style="display:inline-block;width:70px;">评分:</label>
+						<select id='sjmpscore' name="jobscore" class="easyui-combobox" panelHeight="auto" editable='false'>
+							<option value="1">☆</option>
+							<option value="2">☆☆</option>
+							<option value="3" selected = "selected">☆☆☆</option>
+							<option value="4">☆☆☆☆</option>
+							<option value="5">☆☆☆☆☆</option>
+						</select>
+					</div>
+					<div style="padding-top: 15px;"><label style="display:inline-block;width:70px;">评语:</label><input id="bjmpcomment" name="jobcomment" class="easyui-textbox" data-options="multiline:true" style="width:350px;height:200px"></div>
+					<div style="padding-top:10px;text-align:center;">
+						<div style="display:inline;width:60px;"><a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="jmpevaluate('{{ url_for("jobmdf") }}')">确定</a></div>
+						<div style="padding-left:50px;display:inline;width:60px;"><a class="easyui-linkbutton" onclick="$('#mjmpevaluate').window('close')">取消</a></div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!--事务评价对话框结束-->
+	</div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/easyui.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.easyui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/easyui-lang-zh_CN.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/yw.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/zabbixevent.js') }}"></script>
+</head>
+<body>
+<div style="padding-top: 20px;padding-left: 20px;">
+	<script type="text/javascript">
+		$(document).ready(function(){
+			jobmdfurl = '{{ url_for("jobmdf") }}';
+			zabbixmdfurl = '{{ url_for("zabbixmdf") }}';
+			zjmdfurl = '{{ url_for("zjmdf") }}';
+			loadze('{{ url_for("zabbixeventdata") }}');
+			changeflashtime();
+		});
+	</script>
+	<!--zabbix事件列表开始-->
+	<table id="zabbixevent"></table>
+	<div id="zetb" style="height:auto">
+		<div style="margin-top:10px;margin-bottom:5px;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="opendelzfe()">删除已结束事件</a>
+			<span style="margin-left:50px;">
+				自动刷新:
+				<select id='flashdelay' class="easyui-combobox" panelHeight="auto" editable='false'>
+					<option value="0">不刷新</option>
+					<option value="5000">5秒</option>
+					<option value="10000">10秒</option>
+					<option value="30000">30秒</option>
+					<option value="60000">1分钟</option>
+				</select>
+			</span>
+			<span style="margin-left:50px;">
+				<input id='showmode' type='checkbox' onclick="displaymode()">
+				显示已结束的事件
+			</span>
+		</div>
+		<div style="margin-bottom:5px;">
+			<input id='chappentime' type='checkbox'>
+			发生时间从: <input id='thappentimefrom' class="easyui-datetimebox" style="width:150px" editable='false'>
+			到: <input id='thappentimeto' class="easyui-datetimebox" style="width:150px" editable='false'>
+		</div>
+		<div style="margin-bottom:5px;">
+			<input id='cother' type='checkbox'>
+			其它: 
+			<select id='sother' class="easyui-combobox" panelHeight="auto" editable='false'>
+				<option value="did">事件id</option>
+				<option value="hostname">主机名称</option>
+				<option value="description">事件描述</option>
+			</select>
+			<select id='ssearchmode' class="easyui-combobox" panelHeight="auto" editable='false'>
+				<option value="0">精确</option>
+				<option value="1">模糊</option>
+			</select>
+			<input id='tsearchtext' class="easyui-textbox" style="width:200px">
+			<a id='searchbtn' onclick="zfefilter()" style='width:80px;margin-left:50px;' class="easyui-linkbutton" iconCls="icon-search">筛选</a>
+		</div>
+	</div>
+	<!--zabbix事件列表结束-->
+	<!--删除结束事件对话框开始-->
+	<div id="mdelzfe" class="easyui-window" title="删除结束事件" closed="true" style="width:200px;height:150px;"
+		data-options="resizable:false,collapsible:false,minimizable:false,maximizable:false,shadow:true,modal:true">
+		<div style="padding-top: 15px;padding-left: 20px;">
+			<form id="delzfe" method="post">
+				<div><label>范围:</label>
+					<select id='rng' name="rng" class="easyui-combobox" panelHeight="auto" editable='false'>
+						<option value="0">全部</option>
+						<option value="1">下面时间之前</option>
+					</select>
+				</div>
+				<div style="padding-top:10px;">
+					<input id='zfetime' name='zfetime' class="easyui-datetimebox" style="width:150px" editable='false'>
+				</div>
+				<div style="padding-top:10px;text-align:center;">
+					<div style="display:inline;width:60px;"><a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="delzfe('{{ url_for("zabbixmdf") }}')">确定</a></div>
+					<div style="padding-left:20px;display:inline;width:60px;"><a class="easyui-linkbutton" onclick="$('#mdelzfe').window('close')">取消</a></div>
+				</div>
+			</form>
+	</div>
+	<!--删除结束事件对话框结束-->
+</div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/easyui.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.easyui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/easyui-lang-zh_CN.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/yw.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/note.js') }}"></script>
+</head>
+<body>
+<div style="padding-top: 20px;padding-left: 20px;">
+	<script type="text/javascript">
+		$(document).ready(function(){
+			loadnote('{{ url_for("notedata") }}');
+			nfurl = '{{ url_for("noteform") }}';
+			nmurl = '{{ url_for("notemdf") }}';
+		});
+	</script>
+	<!--note开始-->
+	<table id="note"></table>
+	<div id="ntb" style="height:auto">
+		<div style="margin-bottom:5px">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="openaddnote('{{ url_for("addnoteform") }}')">添加</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="delnote('{{ url_for("notemdf") }}')">删除</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="openmdfnote('{{ url_for("notemdf") }}','{{ url_for("mdfnoteform") }}')">修改</a>
+		</div>
+		<div style="margin-bottom:5px;margin-left:5px;">
+			查找方式: 
+			<select id='searchname' class="easyui-combobox" panelHeight="auto" editable='false'>
+				<option value="id">id</option>
+				<option value="title">标题</option>
+				<option value="creator">创建者</option>
+			</select>
+			<select id='searchmode' class="easyui-combobox" panelHeight="auto" editable='false'>
+				<option value="0">精确</option>
+				<option value="1">模糊</option>
+			</select>
+			<input id='searchtext' class="easyui-textbox" style="width:200px">
+			<a id='searchbtn' onclick="notesearch()" style='width:80px;margin-left:60px;' class="easyui-linkbutton" iconCls="icon-search">查找</a>
+		</div>
+	</div>
+	<!--note结束-->
+</div>
+</body>
+</html>

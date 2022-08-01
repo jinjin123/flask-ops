@@ -1,0 +1,10 @@
+﻿{% extends "base.html" %}	
+{% block content %}
+<script type="text/javascript">
+$('#ct').tabs('add',{
+    title: 'Welcome',    
+    href: "{{ url_for('welcome') }}",
+    closable:true
+});
+</script>
+{% endblock %}

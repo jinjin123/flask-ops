@@ -1,0 +1,16 @@
+﻿{% extends "base.html" %}	
+{% block content %}
+<script type="text/javascript">
+$('#ct').tabs('add',{
+    title: '用户',    
+	content: '<iframe style="width:100%;height:100%;" scrolling="auto" frameborder="0" src="{{ url_for('userform') }}"></iframe>',
+    closable:true,
+	tools:[{    
+		iconCls:'icon-mini-refresh',    
+		handler:function(){    
+			flashtabpage('#ct','用户',"{{ url_for('userform') }}")
+		}
+	}]
+});
+</script>
+{% endblock %}

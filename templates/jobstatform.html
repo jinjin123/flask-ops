@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/easyui.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.easyui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/easyui-lang-zh_CN.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jobstat.js') }}"></script>
+</head>
+<body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		loadjobstat('{{ url_for("jobstatdata") }}');
+	});
+</script>
+	<div style="padding-top: 20px;padding-left: 20px;">
+		<table id="jobstat"></table>
+		<div id="jstb" style="height:auto">
+			<div style="margin-top:5px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="exportexcel('{{ url_for("jsexceldownload") }}')">导出Excel表格</a>
+			</div>
+			<div style="padding-top: 5px;padding-left: 5px;padding-bottom: 10px;">
+				<input id='ctime' type='checkbox'>
+				时间从: <input id='ttimefrom' class="easyui-datetimebox" style="width:150px" editable='false'>
+				到: <input id='ttimeto' class="easyui-datetimebox" style="width:150px" editable='false'>
+				<input id='ctype' type='checkbox' style='margin-left:20px;'>
+				事务类型:
+				<select id='stype' class="easyui-combobox" panelHeight="auto" editable='false'>
+					<option value="">全部</option>
+					<option value="0">故障</option>
+					<option value="1">维护</option>
+					<option value="2">部署</option>
+				</select>
+				<a onclick="getjobstat()" style='width:80px;' class="easyui-linkbutton" iconCls="icon-search">统计</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

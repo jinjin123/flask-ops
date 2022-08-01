@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/easyui.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.easyui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/easyui-lang-zh_CN.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/yw.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/job.js') }}"></script>
+</head>
+<body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		loadjd('{{ url_for("jobdata") }}');
+		jdurl = '{{ url_for("jobdatadetail") }}';
+		jmurl = '{{ url_for("jobmdf") }}';
+		jfurl = '{{ url_for("jobform") }}';
+		changeflashtime();
+	});
+</script>
+	<div style="padding-top: 20px;padding-left: 20px;">
+		<table id="ywjobinfo"></table>
+		<div id="jobtb" style="height:auto">
+			<div style="margin-bottom:5px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="openaddjob()">添加事务</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="deljob('{{ url_for("jobmdf") }}')">删除事务</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-reload',plain:true" onclick="jobreload()">刷新</a>
+				<span style="margin-left:50px;">
+					自动刷新:
+					<select id='flashdelay' class="easyui-combobox" panelHeight="auto" editable='false'>
+						<option value="0">不刷新</option>
+						<option value="5000">5秒</option>
+						<option value="10000">10秒</option>
+						<option value="30000">30秒</option>
+						<option value="60000">1分钟</option>
+					</select>
+				</span>
+			</div>
+			<div style="margin-bottom:5px">
+				<span>
+					<input id='cbegintime' type='checkbox'>
+					开始时间从: <input id='tbegintimefrom' class="easyui-datetimebox" style="width:150px" editable='false'>
+					到: <input id='tbegintimeto' class="easyui-datetimebox" style="width:150px" editable='false'>
+					<input id='cstatus' type='checkbox' style='margin-left:20px;'>
+					状态:
+					<select id='sstatus' class="easyui-combobox" panelHeight="auto" editable='false'>
+						<option value="">全部</option>
+						<option value="0">未接手</option>
+						<option value="1">处理中</option>
+						<option value="2">已处理</option>
+					</select>
+					<input id='ctype' type='checkbox' style='margin-left:20px;'>
+					事务类型:
+					<select id='stype' class="easyui-combobox" panelHeight="auto" editable='false'>
+						<option value="">全部</option>
+						<option value="0">故障</option>
+						<option value="1">维护</option>
+						<option value="2">部署</option>
+					</select>
+				</span>
+				<span style='margin-left:80px;'>
+					<a id='searchbtn' onclick="jobfilter()" style='width:80px;' class="easyui-linkbutton" iconCls="icon-search">筛选</a>
+				</span>
+			</div>
+			<div style="margin-bottom:5px">
+				<input id='cendtime' type='checkbox'>
+				结束时间从: <input id='tendtimefrom' class="easyui-datetimebox" style="width:150px" editable='false'>
+				到: <input id='tendtimeto' class="easyui-datetimebox" style="width:150px" editable='false'>
+				<input id='cother' type='checkbox' style='margin-left:20px;'>
+				其它: 
+				<select id='sother' class="easyui-combobox" panelHeight="auto" editable='false'>
+					<option value="id">事务id</option>
+					<option value="jobcreateman">发布人</option>
+					<option value="jobman">处理人</option>
+					<option value="title">事务名称</option>
+				</select>
+				<select id='ssearchmode' class="easyui-combobox" panelHeight="auto" editable='false'>
+					<option value="0">精确</option>
+					<option value="1">模糊</option>
+				</select>
+				<input id='tsearchtext' class="easyui-textbox" style="width:200px">
+			</div>
+		</div>
+		<!--添加事务对话框开始-->
+		<div id="maddjob" class="easyui-window" title="添加事务" closed="true" style="width:535px;height:370px;top:50px;left:50px;"
+			data-options="resizable:false,collapsible:false,minimizable:false,maximizable:false,shadow:true,modal:true">
+			<div style="padding-top: 15px;padding-left: 20px;">
+				<form id="aj" method="post">
+					<div><label style="display:inline-block;width:70px;">事务名称:</label><input id="bjobname" name="jobname" class="easyui-textbox" data-options="required:true" style="width:400px"></div>
+					<div style="padding-top:10px;"><label style="display:inline-block;width:70px;">事务内容:</label><input id="bjobcontent" name="jobcontent" class="easyui-textbox" data-options="multiline:true,required:true" style="width:400px;height:200px"></div>
+					<div style="padding-top:10px;"><label style="display:inline-block;width:70px;">事务类型:</label><input id="bjobtype" name="jobtype" class="easyui-combobox" value="0" data-options="{data:jtype,valueField:'value',textField:'text',editable:false}" style="width:100px"></div>
+					<div style="padding-top:10px;text-align:center;">
+						<div style="display:inline;width:60px;"><a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="addjob('{{ url_for("jobmdf") }}')">保存</a></div>
+						<div style="padding-left:50px;display:inline;width:60px;"><a class="easyui-linkbutton" onclick="$('#maddjob').window('close')">关闭</a></div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!--添加事务对话框结束-->
+		<!--结束事务对话框开始-->
+		<div id="mfinishjob" class="easyui-window" title="结束事务" closed="true" style="width:330px;height:200px;top:50px;left:50px;"
+			data-options="resizable:false,collapsible:false,minimizable:false,maximizable:false,shadow:true,modal:true">
+			<div style="padding-top: 15px;padding-left: 20px;">
+				<form id="ej" method="post">
+					<div><label style="display:inline-block;width:70px;">处理方法:</label><input id="bjobtec" name="jobtec" class="easyui-textbox" data-options="multiline:true" style="width:200px;height:100px"></div>
+					<div style="padding-top:10px;text-align:center;">
+						<div style="display:inline;width:60px;"><a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="finishjob('{{ url_for("jobmdf") }}')">确定</a></div>
+						<div style="padding-left:50px;display:inline;width:60px;"><a class="easyui-linkbutton" onclick="$('#mfinishjob').window('close')">取消</a></div>
+					</div>
+				</form>
+		</div>
+		<!--结束事务对话框结束-->
+		<!--事务过程对话框开始-->
+		<div id="maddjobcourse" class="easyui-window" title="添加事务过程" closed="true" style="width:530px;height:300px;top:50px;left:50px;"
+			data-options="resizable:false,collapsible:false,minimizable:false,maximizable:false,shadow:true,modal:true">
+			<div style="padding-top: 15px;padding-left: 20px;">
+				<form id="jcourse" method="post">
+					<div><label style="display:inline-block;width:70px;">过程:</label><input id="bjobcourse" name="jobcourse" class="easyui-textbox" data-options="multiline:true,required:true" style="width:400px;height:200px"></div>
+					<div style="padding-top:10px;text-align:center;">
+						<div style="display:inline;width:60px;"><a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="addjobcourse('{{ url_for("jobmdf") }}')">确定</a></div>
+						<div style="padding-left:50px;display:inline;width:60px;"><a class="easyui-linkbutton" onclick="$('#maddjobcourse').window('close')">取消</a></div>
+					</div>
+				</form>
+		</div>
+		<!--事务过程对话框结束-->
+		<!--转接处理人对话框开始-->
+		<div id="mchangejobman" class="easyui-window" title="转接处理人" closed="true" style="width:230px;height:120px;top:50px;left:50px;"
+			data-options="resizable:false,collapsible:false,minimizable:false,maximizable:false,shadow:true,modal:true">
+			<div style="padding-top: 15px;padding-left: 20px;">
+				<form id="changejobman" method="post">
+					<div><label style="display:inline-block;width:70px;">处理人:</label><input id="bcjm" name="tojobman" class="easyui-combobox" data-options="{url:'{{ url_for("jobmanlist") }}',method:'post',valueField:'value',textField:'text',editable:false}" style="width:100px"></div>
+					<div style="padding-top:10px;text-align:center;">
+						<div style="display:inline;width:60px;"><a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="changejobman('{{ url_for("jobmdf") }}')">确定</a></div>
+						<div style="padding-left:30px;display:inline;width:60px;"><a class="easyui-linkbutton" onclick="$('#mchangejobman').window('close')">取消</a></div>
+					</div>
+				</form>
+		</div>
+		<!--转接处理人对话框结束-->
+		<!--查看事务详情对话框开始-->
+		<div id="mjobdetail" class="easyui-window" title="事务详情" closed="true" style="width:830px;height:400px;top:50px;left:50px;"
+			data-options="resizable:false,collapsible:false,minimizable:false,maximizable:false,shadow:true,modal:true">
+			<div style="padding-top: 15px;padding-left: 20px;">
+				<table id="jobdetaildatagrid"></table>
+			</div>
+		</div>
+		<!--查看事务详情对话框结束-->
+		<!--事务评价对话框开始-->
+		<div id="mjobevaluate" class="easyui-window" title="事务评价" closed="true" style="width:500px;height:350px;top:50px;left:50px;"
+			data-options="resizable:false,collapsible:false,minimizable:false,maximizable:false,shadow:true,modal:true">
+			<div style="padding-top: 15px;padding-left: 20px;">
+				<form id="jobevaluate" method="post">
+					<div><label style="display:inline-block;width:70px;">评分:</label>
+						<select id='sjobscore' name="jobscore" class="easyui-combobox" panelHeight="auto" editable='false'>
+							<option value="1">☆</option>
+							<option value="2">☆☆</option>
+							<option value="3" selected = "selected">☆☆☆</option>
+							<option value="4">☆☆☆☆</option>
+							<option value="5">☆☆☆☆☆</option>
+						</select>
+					</div>
+					<div style="padding-top: 15px;"><label style="display:inline-block;width:70px;">评语:</label><input id="bjobcomment" name="jobcomment" class="easyui-textbox" data-options="multiline:true" style="width:350px;height:200px"></div>
+					<div style="padding-top:10px;text-align:center;">
+						<div style="display:inline;width:60px;"><a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="jobevaluate('{{ url_for("jobmdf") }}')">确定</a></div>
+						<div style="padding-left:50px;display:inline;width:60px;"><a class="easyui-linkbutton" onclick="$('#mjobevaluate').window('close')">取消</a></div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!--事务评价对话框结束-->
+	</div>
+</body>
+</html>

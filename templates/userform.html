@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/easyui.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.easyui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/easyui-lang-zh_CN.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/yw.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/user.js') }}"></script>
+</head>
+<body>
+<div style="padding-top: 20px;padding-left: 20px;">
+	<script type="text/javascript">
+		$(document).ready(function(){
+			loadud('{{ url_for("userdata") }}');
+			ufurl = '{{ url_for("userform") }}';
+		});
+	</script>
+	<!--用户信息开始-->
+	<table id="ywuserinfo"></table>
+	<div id="usrlitb" style="height:auto">
+		<div style="margin-bottom:5px">
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="openadduser()">添加</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="delusr('{{ url_for("usermdf") }}')">删除</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="editusr()">修改</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true" onclick="ceu()">取消</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save',plain:true" onclick="euok('{{ url_for("usermdf") }}')">确认</a>
+		</div>
+		<div style="margin-bottom:5px;margin-left:5px;">
+			查找方式: 
+			<select id='searchname' class="easyui-combobox" panelHeight="auto" editable='false'>
+				<option value="nickname">用户名</option>
+				<option value="email">邮箱</option>
+			</select>
+			<select id='searchmode' class="easyui-combobox" panelHeight="auto" editable='false'>
+				<option value="0">精确</option>
+				<option value="1">模糊</option>
+			</select>
+			<input id='searchtext' class="easyui-textbox" style="width:200px">
+			<a id='searchbtn' onclick="namesearch()" style='width:80px;' class="easyui-linkbutton" iconCls="icon-search">查找</a>
+		</div>
+	</div>
+	<!--新增用户对话框开始-->
+	<div id="madduser" class="easyui-window" title="新增用户" closed="true" style="width:350px;height:250px;top:50px;left:50px;"
+		data-options="resizable:false,collapsible:false,minimizable:false,maximizable:false,shadow:true,modal:true">
+		<div style="padding-top: 15px;padding-left: 20px;">
+			<form id="au" method="post">
+				<div><label style="display:inline-block;width:70px;">用户名:</label><input id="busername" name="name" class="easyui-textbox" data-options="iconCls:'icon-man',required:true,validType:'username'" style="width:200px"></div>
+				<div style="padding-top:10px;"><label style="display:inline-block;width:70px;">密码:</label><input id="bpassword" name="password" type="password" class="easyui-validatebox" data-options="required:true" style="width:200px"></div>
+				<div style="padding-top:10px;"><label style="display:inline-block;width:70px;">确认密码:</label><input id="bpasswordtwo" type="password" class="easyui-validatebox" required="required" validType="equals['#bpassword']" style="width:200px"></div>
+				<div style="padding-top:10px;"><label style="display:inline-block;width:70px;">邮箱:</label><input id="bemail" name="email" class="easyui-validatebox" data-options="required:true,validType:'email'" style="width:200px"></div>
+				<div style="padding-top:10px;"><label style="display:inline-block;width:70px;">权限:</label><input id="brole" name="role" class="easyui-combobox" value="2" data-options="{data:roletext,valueField:'value',textField:'text',editable:false}" style="width:100px"></div>
+				<div style="padding-top:10px;text-align:center;">
+					<div style="display:inline;width:60px;"><a class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="adduser('{{ url_for("usermdf") }}')">保存</a></div>
+					<div style="padding-left:50px;display:inline;width:60px;"><a class="easyui-linkbutton" onclick="$('#madduser').window('close')">关闭</a></div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!--新增用户对话框结束-->
+	<!--用户信息结束-->
+</div>
+</body>
+</html>

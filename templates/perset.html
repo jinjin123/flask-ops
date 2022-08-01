@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/easyui.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icon.css') }}">
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.easyui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/yw.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/perset.js') }}"></script>
+</head>
+<body>
+	<div style="padding-top: 20px;padding-left: 20px;">
+		<div><label style="display:inline-block;width:100px;">用户名:</label>{{ g.user.nickname }}</div>
+		<form id="cp" method="post">
+			<div style="padding-top:10px;">
+				<label style="display:inline-block;width:100px;">旧密码:</label>
+				<input id='poldpasswd' type="password" class="easyui-textbox" style="width:200px;">
+			</div>
+			<div style="padding-top:10px;">
+				<label style="display:inline-block;width:100px;">新密码:</label>
+				<input id='pnewpasswd' name='pwd' type="password" class="easyui-textbox" style="width:200px;">
+				<div style="display:inline;padding-left:20px;">
+					<a class="easyui-linkbutton" onclick="changeppassword('{{ url_for("usermdf") }}','{{ url_for("perset") }}')">修改密码</a>
+				</div>
+			</div>
+			<div style="padding-top:10px;">
+				<label style="display:inline-block;width:100px;">确认新密码:</label>
+				<input id='pnewpasswdtwo' type="password" class="easyui-textbox" style="width:200px;">
+			</div>
+		</form>
+		<form id="cm" method="post">
+			<div style="padding-top:10px;">
+				<label style="display:inline-block;width:100px;">邮箱:</label>
+				<input id='pemail' name='mail' class="easyui-textbox" style="width:200px;" value="{{ g.user.email }}">
+				<div style="display:inline;padding-left:20px;">
+					<a class="easyui-linkbutton" onclick="changepemail('{{ url_for("usermdf") }}','{{ url_for("perset") }}')">修改邮箱</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
